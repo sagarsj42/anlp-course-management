@@ -4,11 +4,11 @@ import gspread
 from gspread.exceptions import APIError
 
 
-slots_sheet_name = 'anlp-assgn1-evaluations'
-marksheet_name = 'assgn1-marksheet'
+slots_sheet_name = 'anlp-assgn2-evaluations'
+marksheet_name = 'anlp-assgn2-marksheet'
 tas = ['Sagar', 'Suyash', 'Tanvi', 'Veeral']
 
-sa = gspread.service_account('sagar-sa-key.json')
+sa = gspread.service_account('../sagar-sa-key.json')
 sh = sa.open(slots_sheet_name)
 ws = sh.worksheet('slots')
 n_rows = ws.row_count

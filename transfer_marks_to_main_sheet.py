@@ -1,12 +1,12 @@
 import gspread
 
 
-tawise_sheet_name = 'assgn1-marksheet'
-ip_col = 'Assgn. Total'
+tawise_sheet_name = 'anlp-assgn2-marksheet'
+ip_col = 'Assgn. Bonus'
 tas = ['Sagar', 'Suyash', 'Tanvi', 'Veeral']
 
 main_sheet_name = 'anlp-marksheet'
-marks_wb_name = 'assgn1'
+marks_wb_name = 'assgn2-bonus'
 
 sa = gspread.service_account('../sagar-sa-key.json')
 sh1 = sa.open(tawise_sheet_name)
@@ -25,7 +25,12 @@ for ta in tas:
     marks_index = ip_records[0].index(ip_col)
 
     data = ip_records[2:]
+    print(ta)
+    print(len(data))
+    data = [row for row in data if row[0] and row[1] and row[2]]
+    print(len(data))
     for row in data:
+        print(row)
         find = row[2]
         enter = row[marks_index]
         for i in range(n_vals):

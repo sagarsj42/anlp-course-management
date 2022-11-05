@@ -40,10 +40,10 @@ from gspread.exceptions import APIError
 # except HttpError as e:
 #     print(e)
 
-sheet_name = 'anlp-assgn1-evaluations'
+sheet_name = 'anlp-assgnX-evaluations'
 tas = ['Sagar', 'Suyash', 'Tanvi', 'Veeral']
 
-sa = gspread.service_account('sagar-sa-key.json')
+sa = gspread.service_account('../sagar-sa-key.json')
 sh = sa.open(sheet_name)
 ws = sh.worksheet('names')
 
@@ -51,7 +51,6 @@ print('Rows:', ws.row_count)
 print('Cols:', ws.col_count)
 
 records = ws.get_all_values()
-header = records[0]
 records = records[1:]
 
 print(type(records), len(records))
@@ -68,7 +67,8 @@ for i in range(n_tas):
         random.shuffle(indices)
         indices = set(indices)
     else:
-        indices = random.sample(list(record_set), n_records // 4)
+        n_samples = n_records // 4 + 1
+        indices = random.sample(list(record_set), n_samples)
     ta_records[tas[i]] = [records[i] for i in indices]
     record_set -= set(indices)
 
@@ -83,8 +83,10 @@ except APIError as e:
     print(e)
     ws2 = sh.worksheet('slots')
 
+header = ['First Name', 'Last Name', 'Roll No.', 'TA', 'Venue', 'Date', 'Time', 'Status']
+
 print(header)
-ws2.update('A1:F1', [header])
+ws2.update('A1:H1', [header])
 s = 1
 
 for ta, records in ta_records.items():
