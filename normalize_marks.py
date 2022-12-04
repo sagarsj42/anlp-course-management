@@ -5,7 +5,7 @@ import numpy as np
 
 
 marks_worksheet_name = 'anlp-marksheet'
-sheet_name = 'assgn1'
+sheet_name = 'assgn3'
 tas = ['Sagar', 'Suyash', 'Tanvi', 'Veeral']
 
 sa = gspread.service_account('../sagar-sa-key.json')
@@ -50,8 +50,11 @@ stats_col.append('Normalizable stats')
 stats_col.append('')
 print('Normalizable stats:')
 
+lb = 5
+ub = 95
+
 for ta, marks in ta_marks.items():
-    ta_marks_nz[ta] = np.array([m for m in marks if m > 5 and m < 95])
+    ta_marks_nz[ta] = np.array([m for m in marks if m > lb and m < ub])
     stats_col.append(ta)
     stats_col.append(ta_marks_nz[ta].mean())
     stats_col.append(ta_marks_nz[ta].std())
@@ -59,8 +62,8 @@ for ta, marks in ta_marks.items():
     print(ta, ta_marks_nz[ta].mean(), ta_marks_nz[ta].std())
 stats_col.append('')
 
-common_mean = 75
-common_std = 16
+common_mean = 79
+common_std = 9
 
 stats_col.append('Normalizing to:')
 stats_col.append(common_mean)
@@ -73,10 +76,10 @@ ta_norm_marks = dict()
 for ta, marks in ta_marks.items():
     norm_marks = list()
     for m in marks:
-        if m <= 5 or m >= 95:
+        if m <= lb or m >= ub:
             norm_marks.append(round(m))
             continue
-        nm = round(min(common_mean + (m - ta_marks_nz[ta].mean()) * common_std / ta_marks_nz[ta].std(), 95))
+        nm = round(min(common_mean + (m - ta_marks_nz[ta].mean()) * common_std / ta_marks_nz[ta].std(), ub))
         norm_marks.append(nm)
     ta_norm_marks[ta] = np.array(norm_marks)
 
@@ -93,7 +96,7 @@ stats_col.append('')
 stats_col.append('Normalized stats, normalized values only:')
 print('Normalized stats, normalized values only:')
 for ta, marks in ta_norm_marks.items():
-    marks_nz = np.array([m for m in marks if m > 5 and m < 95])
+    marks_nz = np.array([m for m in marks if m > lb and m < ub])
 
     stats_col.append(ta)
     stats_col.append(marks_nz.mean())
@@ -114,10 +117,10 @@ for record in records:
     t_mean = tmnz.mean()
     t_std = tmnz.std()
 
-    if m <= 5 or m >= 95:
+    if m <= lb or m >= ub:
         nm = round(m)
     else:
-        nm = round(min(common_mean + (m - t_mean) * common_std / t_std, 95))
+        nm = round(min(common_mean + (m - t_mean) * common_std / t_std, ub))
     normalized.append(nm)
 
 ws.update(f'G1:G{len(stats_col)}', [[s] for s in stats_col])
