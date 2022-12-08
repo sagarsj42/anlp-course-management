@@ -1,12 +1,12 @@
 import gspread
 
 
-tawise_sheet_name = 'anlp-assgn1-marksheet'
-ip_col = 'Assgn. Total'
+tawise_sheet_name = 'anlp-assgn2-marksheet'
+ip_col = 'Assgn. Bonus'
 tas = ['Sagar', 'Suyash', 'Tanvi', 'Veeral']
 
 main_sheet_name = 'anlp-marksheet'
-marks_wb_name = 'assgn1'
+marks_wb_name = 'assgn2-bonus'
 
 sa = gspread.service_account('../sagar-sa-key.json')
 sh1 = sa.open(tawise_sheet_name)

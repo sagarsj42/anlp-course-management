@@ -6,13 +6,15 @@ tas = ['sagar', 'suyash', 'tanvi', 'veeral']
 
 input_wb_name = 'anlp-assgn3-marksheet'
 input_ta_col = 'TA'
-input_marks_col = 'Bonus Total'
+total_marks_col = 'Total'
+bonus_marks_col = 'Bonus Total'
+overall_marks_col = 'Total Marks (140)'
 input_rno_col = 'Roll No.'
 
 input_wb = sa.open(input_wb_name)
 
 output_wb_name = 'anlp-marksheet'
-output_sheet_name = 'assgn3-bonus'
+output_sheet_name = 'assgn3'
 output_rno_col = 'ID number'
 output_ta_col = 'TA'
 output_marks_col = 'Marks'
@@ -32,18 +34,28 @@ for ta in tas:
     input_data = ta_input_ws.get_all_values()
     input_header = input_data[0]
     input_records = input_data[3:]
-    input_marks_indx = input_header.index(input_marks_col)
+    input_total_indx = input_header.index(total_marks_col)
+    input_bonus_indx = input_header.index(bonus_marks_col)
+    input_overall_indx = input_header.index(overall_marks_col)
     input_rno_indx = input_header.index(input_rno_col)
 
     for record in input_records:
         if not record[input_rno_indx]:
             continue
-        marks = record[input_marks_indx]
-        if not marks:
-            marks = '0'
+
+        bonus = record[input_bonus_indx]
+        if not bonus:
+            bonus = '0'
 
         if 'bonus' in output_sheet_name:
-            marks = str(int(int(marks) * 25 / 40))
+            marks = bonus
+            marks = str(int(float(marks) * 25 / 40))
+        else:
+            overall = record[input_overall_indx]
+            if not overall:
+                marks = '0'
+            else:
+                marks = str(int(float(overall) - float(bonus)))
 
         rno = record[input_rno_indx]
         output_indxs = [i for i, o in enumerate(output_data) if o[output_rno_indx] == rno]

@@ -3,8 +3,8 @@ import numpy as np
 
 
 marks_worksheet_name = 'anlp-marksheet'
-sheet_name = 'interim'
-marks_col = 'Marks'
+sheet_name = 'assgn3'
+marks_col = 'Normalized'
 
 sa = gspread.service_account('../sagar-sa-key.json')
 sh = sa.open(marks_worksheet_name)
@@ -23,3 +23,5 @@ print(sheet_name)
 print(f'Mean: {all_marks.mean():.2f}')
 print(f'Std: {all_marks.std():.2f}')
 print(f'Median: {np.median(all_marks):.2f}')
+
+print(f'({all_marks.mean():.2f}, {all_marks.std():.2f}, {np.median(all_marks):.2f}) [{int(all_marks.max())}]')
